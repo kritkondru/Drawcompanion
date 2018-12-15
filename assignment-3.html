@@ -1,0 +1,159 @@
+<html>
+  <head>
+    <title>Draw Companion</title>
+    <link rel="stylesheet" href="b.css" type="text/css">
+    <meta name="viewport" content="width=device-width",initial-scale=1.0">
+      <script type="text/javascript">
+        var canvas=document.getElementById('canvas');
+        function text(){
+        clearRect();
+          var canvas = document.getElementById("canvas");
+          var ctx = canvas.getContext("2d");
+          ctx.font = "30px Arial";
+          ctx.fillText("Enjoy Painting",225,225);
+        }
+    window.addEventListener('load', function (){
+    var toolSelect=document.getElementById('tool');
+    var colorValue="#000000";
+    var canvas = document.getElementById('canvas');       
+    canvas.addEventListener('mousemove', function(evt)
+      {
+        var mousePos = getMousePost(canvas, evt);
+        var posx = mousePos.x;
+        var posy = mousePos.y;
+        draw(canvas,posx,posy);
+      });},false);
+  function draw(canvas, posx,posy)
+  { 
+      var context = canvas.getContext('2d');
+      context.fillRect(posx,posy,5,5);
+      context.fillStyle=document.getElementById('color').value;
+  } 
+  function drawSquare(x,y){
+    var canvas=document.getElementById("canvas");
+      var context = canvas.getContext('2d');
+
+    context.fillStyle=document.getElementById('color').value;
+    context.fillRect(x,y,5,5);
+  }
+  function drawDot(x,y){
+    var canvas=document.getElementById('canvas')
+  var context = canvas.getContext('2d');
+  console.log("inside dot function");
+    r=0; g=0;b=0;a=255;
+    context.fillStyle=document.getElementById('color').value;
+    context.beginPath();
+    context.arc(x,y,12,0, Math.PI*3,true);
+    context.closePath();
+    context.fill();
+  }
+  function getMousePost(canvas, evt){
+    var rect = canvas.getBoundingClientRect();
+    scaleX=canvas.width/rect.width;
+    scaleY=canvas.height/rect.height;
+    return {
+      x:(evt.clientX - rect.left)*scaleX,
+      y:(evt.clientY - rect.top)*scaleY
+    };
+  }
+  document.onmousemove=function(evt){
+    var canvas=document.getElementById("canvas");
+    var mousePos=getMousePost(canvas,evt);
+    var posx=mousePos.x;
+    var posy=mousePos.y;
+    paint=true;
+    if(document.getElementById("square").checked){
+    drawSquare(posx,posy);
+  }
+  if(document.getElementById("circle").checked){
+        drawDot(posx,posy);
+  }   
+  }
+
+  function clearRect()
+  {
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    context.clearRect(0,0,canvas.width,canvas.height);
+  }
+  window.onload=function(){
+    var canvas=document.getElementById('canvas');
+    console.log(canvas.width);
+  canvas.addEventListener('touchstart', sketchpad_touchStart, false);
+    canvas.addEventListener('touchmove', sketchpad_touchMove, false);
+var context=canvas.getContext("2d");
+
+
+    function sketchpad_touchStart() {
+        // Update the touch co-ordinates
+        getTouchPos();
+
+        if(document.getElementById("square").checked){
+    drawSquare(touchX,touchY);
+  }
+  if(document.getElementById("circle").checked){
+        drawDot(touchX,touchY);
+  }         event.preventDefault();
+    }
+
+    function sketchpad_touchMove(e) { 
+        getTouchPos(e);
+        if(document.getElementById("square").checked){
+    drawSquare(touchX,touchY);
+  }
+  if(document.getElementById("circle").checked){
+        drawDot(touchX,touchY);
+  } 
+
+        event.preventDefault();
+    }
+    function getTouchPos(e) {
+        if (!e)
+            var e = event;
+
+        if(e.touches) {
+            if (e.touches.length == 1) { 
+                var touch = e.touches[0]; 
+
+                var rect = canvas.getBoundingClientRect();
+        scaleX = canvas.width / rect.width,    
+          scaleY = canvas.height / rect.height;
+
+                touchX=(touch.pageX-touch.target.offsetLeft)*scaleX;
+                touchY=(touch.pageY-touch.target.offsetTop)*scaleY;
+            }
+        }
+
+}
+}
+  </script>
+
+  <style> 
+    </style>
+  </head>
+  <body>
+    <header>Draw Companion</header>
+    <div class="container">
+     <div id="draw">
+      <center>
+      <canvas id="canvas" width=600px; height=450px ></canvas><br>
+      <button id="but" onClick="clearRect()">CLEAR</button>
+      </center>
+     </div>
+     <div id="sidediv">
+      <center>
+      <label><h3>Change color:</h3>
+            <input type="color" id="color" value="color"name="colorpicker"/><br/><br/>
+            </label>
+      <form id="tool">
+        <h3>Change Brush Type:</h3>
+        <input type="radio" value="circle" id="circle"name="sel" checked="" />Semi Circle<br/>
+        <input type="radio" value="square" id="square"name="sel" />Square<br/>
+      </form>
+      <button onclick="text()">Display Text</button>
+      </center>
+      </div>
+  </div>
+  <footer>Copyrights @ Kritin Kondru</footer>
+  </body>
+</html>
